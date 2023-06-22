@@ -1,33 +1,36 @@
 import CanvasController from "./canvas-controller";
-
-type Point = {
-    x: number,
-    y: number
-}
-
+import { Point } from "./common-types";
 export class DrawController extends CanvasController {
 
     points: Array<Point>
     drawing: boolean;
     minDrawDist: number = 3;
+    onDrawingStart: Array<Function> = [];
+    onDrawingEnd: Array<Function> = [];
 
     constructor(id: string) {
         super(id);        
         this.points = [];
         this.drawing = false;
+
         this.canvas.addEventListener("mousedown", () => this.startDraw());
         window.addEventListener("mouseup", () => this.stopDraw());
+
+    }
+
+    get path() {
+        return this.points.slice();
     }
 
     startDraw() {
         this.points = [];
         this.drawing = true;
-        console.log(this.drawing);
+        this.onDrawingStart.forEach(fn => fn());
     }
 
     stopDraw() {
         this.drawing = false;
-        console.log(this.drawing);
+        this.onDrawingEnd.forEach(fn => fn());
     }
 
     update(dt: number, mousePos) {
@@ -37,7 +40,7 @@ export class DrawController extends CanvasController {
 
         const canvasPos = this.canvas.getBoundingClientRect();        
         const scale = this.canvas.offsetWidth === 0 ? 0 : (this.canvas.width / this.canvas.offsetWidth);
-        
+
         const point = {
             x: scale * (mousePos.x - canvasPos.left),
             y: scale * (mousePos.y - canvasPos.top),
