@@ -18,11 +18,18 @@
 
         <section>
             <h4>Draw a sketch here: </h4>
+
             <div id="draw">
-                <canvas id="drawingCanvas" width="400" height="400"></canvas>
-                <canvas id="renderCanvas" width="400" height="400"></canvas>
+                <div id="drawCanvases">
+                    <canvas id="drawingCanvas" width="400" height="400"></canvas>
+                    <canvas id="renderCanvas" width="400" height="400"></canvas>
+                </div>
+                <div class="slider">
+                    <input type="range" min="0" max="1" value="1" class="slider-input" id="slider" step="any">
+                    <p>Number of circles: <output id="coeffCount"></output></p>
+                </div>
             </div>
-        
+
         </section>
         <!-- <script>var exports = {};</script>-->
         <script src="js/main.js"></script> 

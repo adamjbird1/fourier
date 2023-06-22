@@ -10,16 +10,22 @@ export class EpiController extends CanvasController {
     animProgress: number = 0;
     period: number = 10;
     pathChanged: boolean = false;
-    coeffCount = 5;
+    coeffCount = 0;
 
     constructor(id) {
         super(id);
     }
 
+    setCoeffCount(amount) {
+        this.coeffCount = Math.floor(amount * this.fourierCoeffs.length);
+        this.pathChanged = true;
+    }
+
     setPath(points: Array<Point>) {
         this.rawPoints = points.slice();
-        this.fourierCoeffs = dft(points.map(p => new Complex(p.x, p.y)));
+        this.fourierCoeffs = dft(points.map(p => new Complex(p.x, p.y))).filter(c => c.amp > 0.01);
         this.fourierCoeffs.sort((a, b) => b.amp - a.amp);
+        this.coeffCount = this.fourierCoeffs.length;
         this.pathChanged = true;
     }
 
@@ -29,7 +35,7 @@ export class EpiController extends CanvasController {
         this.path = [];
 
         for (let i = 0; i < this.rawPoints.length; i++) {
-            pathProgress += 1/this.rawPoints.length;
+            pathProgress += 1 / (this.rawPoints.length);
             this.addPoint(pathProgress);
         }
         console.log(this.path)
@@ -97,11 +103,13 @@ export class EpiController extends CanvasController {
 
             this.ctxt.beginPath();
             this.ctxt.lineWidth = 1;
+            // this.ctxt.strokeStyle = '#4075C9';
+            this.ctxt.globalAlpha = 0.7;
             this.ctxt.moveTo(currentX, currentY);
             this.ctxt.arc(currentX, currentY, amplitude, angle - Math.PI, angle + Math.PI);
-            this.ctxt.stroke();
-                
+            this.ctxt.stroke();                
         }
+        this.ctxt.globalAlpha = 1;
     }
 
     update(dt, _) {
