@@ -35,10 +35,12 @@ export class DrawController extends CanvasController {
             return;
         }
 
-        const canvasPos = this.canvas.getBoundingClientRect();
-        const point: Point = {
-            x: mousePos.x - canvasPos.x,
-            y: mousePos.y - canvasPos.y
+        const canvasPos = this.canvas.getBoundingClientRect();        
+        const scale = this.canvas.offsetWidth === 0 ? 0 : (this.canvas.width / this.canvas.offsetWidth);
+        
+        const point = {
+            x: scale * (mousePos.x - canvasPos.left),
+            y: scale * (mousePos.y - canvasPos.top),
         }
 
         if (this.points.length == 0) {
@@ -59,7 +61,22 @@ export class DrawController extends CanvasController {
     }
 
     render() {
-        console.log(this.points);
-        // console.log(this.drawing);
+        this.clear();
+    
+        if (this.points.length < 2) {
+            return;
+        }
+    
+        this.ctxt.beginPath();
+        this.ctxt.moveTo(this.points[0].x, this.points[0].y);
+    
+        for (let i = 1; i < this.points.length; i++) {
+            this.ctxt.lineTo(this.points[i].x, this.points[i].y);
+        }
+
+        // since the drawing must be a loop
+        this.ctxt.lineTo(this.points[0].x, this.points[0].y);
+    
+        this.ctxt.stroke();
     }
 }

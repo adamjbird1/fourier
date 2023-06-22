@@ -37,6 +37,7 @@ export class Conductor {
 
     handleMouseMove(evt) {
         this.mousePos = { x: evt.clientX, y: evt.clientY };
+        // console.log('x: %d, y: %d', evt.clientX, evt.clientY);
     }
     
 
