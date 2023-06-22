@@ -2,7 +2,6 @@
 //     re: number,
 //     im: number
 // }
-
 interface FourierCoef {
     num: Complex,
     freq: number,
