@@ -6,3 +6,5 @@ function init() {
     let conductor = new Conductor([sketchController]);
     conductor.start();
 }
+
+init();
