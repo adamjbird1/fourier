@@ -8,7 +8,7 @@ export class Conductor {
 
     constructor(controllers) {
         this.controllers = controllers;
-        this.lastTime = Date.now();
+        this.lastTime = Date.now()/1000;
         this.mousePos = null;
 
         window.addEventListener('mousemove', (evt) => this.handleMouseMove(evt));
@@ -25,7 +25,7 @@ export class Conductor {
     }
 
     update() {
-        const currTime = Date.now();
+        const currTime = Date.now()/1000;
         const dt = currTime - this.lastTime;
 
         this.controllers.forEach(c => {
