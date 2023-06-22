@@ -11,7 +11,7 @@ export class Conductor {
         this.lastTime = Date.now();
         this.mousePos = null;
 
-        window.addEventListener('mousemove', this.handleMouseMove);
+        window.addEventListener('mousemove', (evt) => this.handleMouseMove(evt));
     }
 
     start() {
@@ -37,7 +37,8 @@ export class Conductor {
 
     handleMouseMove(evt) {
         this.mousePos = { x: evt.clientX, y: evt.clientY };
-    }    
+    }
+    
 
     render() {
         this.controllers.forEach(c => {            
