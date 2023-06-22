@@ -28,10 +28,12 @@ export class DrawController extends CanvasController {
         console.log(this.drawing);
     }
 
-    update(dt: number, mousePos: number) {
+    update(dt: number, mousePos) {
         if (!this.drawing) {
             return;
         }
+
+
         
     }
 

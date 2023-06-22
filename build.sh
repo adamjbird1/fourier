@@ -1,2 +1,2 @@
-tsc src/js/*.ts
+tsc
 npx webpack
