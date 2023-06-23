@@ -2,6 +2,10 @@
 <html>
 <head>
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async
+          src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
 </head>
 <body>
     <header>
@@ -30,6 +34,22 @@
                 </div>
             </div>
 
+        </section>
+        <section>
+            <h2>What <i>is</i> a Fourier series?</h2>
+            <p>$$s(x) = \sum_{n=-\infty}^\infty c_n\cdot e^{\frac{2\pi i nx}{P}}$$ where $$c_n = \frac{1}{P}\int_{-P/2}^{P/2} s(x)e^{-\frac{2\pi inx}{P}}\,dx$$</p>
+
+            <p>A Fourier series is an expansion a periodic function into a sum of trigonometric functions.</p>
+        </section>
+
+        <section id="waves">
+            <canvas id="wavesCanvas" width="600" height="200"></canvas>
+            <select id="waveSelector">
+                <option value="Sine" selected>Sine</option>
+                <option value="Square">Square</option>
+                <option value="Sawtooth">Sawtooth</option>
+                <option value="Triangular">Triangular</option>
+            </select>
         </section>
         <!-- <script>var exports = {};</script>-->
         <script src="js/main.js"></script> 
