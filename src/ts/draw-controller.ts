@@ -29,8 +29,10 @@ export class DrawController extends CanvasController {
     }
 
     stopDraw() {
-        this.drawing = false;
-        this.onDrawingEnd.forEach(fn => fn());
+        if (this.drawing) {
+            this.drawing = false;
+            this.onDrawingEnd.forEach(fn => fn());
+        }
     }
 
     update(dt: number, mousePos) {
