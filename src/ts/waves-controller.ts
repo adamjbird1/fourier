@@ -14,7 +14,7 @@ function waveCoefficients(n: number, ampScale: number, kind: WaveKind): FourierC
     for (let k = 1; k <= n; k++) {
       let amp: number;
       let freq: number;
-      const phase = 0;
+      let phase = 0;
   
       switch (kind) {
         case WaveKind.Sine:
@@ -37,12 +37,14 @@ function waveCoefficients(n: number, ampScale: number, kind: WaveKind): FourierC
 
         // TODO: fix triangular wave
         case WaveKind.Triangular:
-            if (k % 2 === 1) {
-                amp = (ampScale * 8) / (k * k * Math.PI * Math.PI);
-                freq = k;
-                coefficients.push({ amp, freq, phase });
-            }
-            break;
+                if (k % 2 === 1) {
+                    const sign = (k % 4 === 1) ? 1 : -1;
+                    amp = ampScale * 8 / (k * k * Math.PI * Math.PI);
+                    phase = sign === -1 ? Math.PI : 0;
+                    freq = k;
+                    coefficients.push({ amp, freq, phase });
+                }
+                break;
         }
     }
   
@@ -52,7 +54,7 @@ function waveCoefficients(n: number, ampScale: number, kind: WaveKind): FourierC
 
 export class WaveController extends CanvasController {
     
-    coeffCount = 10;
+    coeffCount = 20;
     fourierCoeffs: Array<FourierCoef> = [];
     path: Array<Point> = [];
     pathChanged: boolean = false;
@@ -126,7 +128,7 @@ export class WaveController extends CanvasController {
             currentX += amplitude * Math.cos(angle);
             currentY += amplitude * Math.sin(angle);
 
-            if (i === 0) {
+            if (i === 0 || amplitude < 0.5) {
                 continue;
             }
 
