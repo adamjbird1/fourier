@@ -13,6 +13,8 @@ export class Conductor {
 
         window.addEventListener('mousemove', (evt) => this.handleMouseMove(evt));
         document.addEventListener('touchmove',  (evt) => this.handleTouchMove(evt));
+        document.addEventListener('touchstart', (evt) => this.handleTouchMove(evt));
+        document.addEventListener('touchend',   (evt) => this.handleTouchMove(evt));
     }
 
     start() {

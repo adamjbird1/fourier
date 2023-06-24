@@ -19,6 +19,6 @@ export default class CanvasController extends Controller {
     }
 
     clear() {
-        this.ctxt.clearRect(0, 0, this.width, this.height);
+        this.ctxt.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
 }

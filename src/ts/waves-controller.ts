@@ -61,10 +61,22 @@ export class WaveController extends CanvasController {
     animProgress = 0;
     period = 5;
     trace: Array<Point> = [];
-    xOffset = this.width/2;
+    xOffset = this.canvas.width/2;
+    
+    canvasObserver;
 
     constructor(id, selectorId) {
         super(id);
+
+        this.canvasObserver = new ResizeObserver((e) => {
+            this.canvas.width = this.canvas.clientWidth;
+            this.canvas.height = this.canvas.clientHeight;
+            this.xOffset = this.canvas.width/2;
+            console.log(this.canvas.width)
+        })
+    
+        this.canvasObserver.observe(this.canvas);
+        console.log(this.canvasObserver)
     }
 
     setWave(kindString: String) {
@@ -72,7 +84,7 @@ export class WaveController extends CanvasController {
         const waveCoeffs = waveCoefficients(this.coeffCount, 50, kind)
         
         this.fourierCoeffs = []
-        this.fourierCoeffs.push({freq: 0, amp: 150, phase: Math.PI/4});
+        this.fourierCoeffs.push({freq: 0, amp: (this.canvas.height/2) / Math.cos(Math.PI/4), phase: Math.PI/4});
         waveCoeffs.forEach(c => this.fourierCoeffs.push(c))
     }
 
@@ -91,7 +103,6 @@ export class WaveController extends CanvasController {
     }
 
     drawPath() {
-        this.clear();
     
         if (this.trace.length < 2) {
             return;
@@ -147,13 +158,14 @@ export class WaveController extends CanvasController {
                             
         }
         this.trace.unshift({x: currentX, y: currentY});
-        if (this.trace.length > this.width) {
+        if (this.trace.length > this.canvas.width) {
             this.trace.pop();
         }
         this.ctxt.globalAlpha = 1;
     }
 
     render() {
+        this.clear();
         this.drawPath();
         this.drawCircles();
     }

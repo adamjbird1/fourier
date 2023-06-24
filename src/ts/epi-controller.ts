@@ -38,7 +38,6 @@ export class EpiController extends CanvasController {
             pathProgress += 1 / (this.rawPoints.length);
             this.addPoint(pathProgress);
         }
-        console.log(this.path)
     }
 
     addPoint(progress) {
@@ -55,11 +54,8 @@ export class EpiController extends CanvasController {
 
             currentX += amplitude * Math.cos(angle);
             currentY += amplitude * Math.sin(angle);
-
-            // if (i == 0 || amplitude < 0.5) {
-            //     continue;
-            // }
         }
+
         this.path.push({x: currentX, y: currentY});
     }
 
@@ -93,7 +89,7 @@ export class EpiController extends CanvasController {
             currentX += amplitude * Math.cos(angle);
             currentY += amplitude * Math.sin(angle);
 
-            if (i == 0 || i > this.coeffCount || amplitude < 0.5) {
+            if (i == 0 || i > this.coeffCount) {
                 continue;
             }
 
