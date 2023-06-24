@@ -12,6 +12,7 @@ export class Conductor {
         this.mousePos = null;
 
         window.addEventListener('mousemove', (evt) => this.handleMouseMove(evt));
+        document.addEventListener('touchmove',  (evt) => this.handleTouchMove(evt));
     }
 
     start() {
@@ -35,9 +36,15 @@ export class Conductor {
         this.lastTime = currTime;
     }
 
-    handleMouseMove(evt) {
-        this.mousePos = { x: evt.clientX, y: evt.clientY };
+    handleMouseMove(e) {
+        this.mousePos = { x: e.clientX, y: e.clientY };
         // console.log('x: %d, y: %d', evt.clientX, evt.clientY);
+    }
+
+    handleTouchMove(e) {
+        if (e.touches.length > 0) {
+            this.mousePos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        }
     }
     
 

@@ -14,8 +14,12 @@ export class DrawController extends CanvasController {
         this.drawing = false;
 
         this.canvas.addEventListener("mousedown", () => this.startDraw());
-        window.addEventListener("mouseup", () => this.stopDraw());
+        this.canvas.addEventListener('touchstart', () => this.startDraw());
+        
+        document.addEventListener("mouseup", () => this.stopDraw());
+        document.addEventListener('touchend', () => this.stopDraw());
 
+        this.canvas.addEventListener('touchmove', (evt) => evt.preventDefault(), {passive: false});
     }
 
     get path() {
