@@ -19,7 +19,9 @@ function waveCoefficients(n: number, ampScale: number, kind: WaveKind): FourierC
       switch (kind) {
         case WaveKind.Sine:
             if (k === 1) {
-                coefficients.push({ amp: ampScale, freq: 1, phase })
+                amp = ampScale;
+                freq = 1;
+                coefficients.push({ amp, freq, phase })
             }
             break;
         case WaveKind.Square:
@@ -35,16 +37,15 @@ function waveCoefficients(n: number, ampScale: number, kind: WaveKind): FourierC
             coefficients.push({ amp, freq, phase });
             break;
 
-        // TODO: fix triangular wave
         case WaveKind.Triangular:
-                if (k % 2 === 1) {
-                    const sign = (k % 4 === 1) ? 1 : -1;
-                    amp = ampScale * 8 / (k * k * Math.PI * Math.PI);
-                    phase = sign === -1 ? Math.PI : 0;
-                    freq = k;
-                    coefficients.push({ amp, freq, phase });
-                }
-                break;
+            if (k % 2 === 1) {
+                const sign = (k % 4 === 1) ? 1 : -1;
+                amp = ampScale * 8 / (k * k * Math.PI * Math.PI);
+                phase = sign === -1 ? Math.PI : 0;
+                freq = k;
+                coefficients.push({ amp, freq, phase });
+            }
+            break;
         }
     }
   
@@ -65,7 +66,7 @@ export class WaveController extends CanvasController {
     
     canvasObserver;
 
-    constructor(id, selectorId) {
+    constructor(id) {
         super(id);
 
         this.canvasObserver = new ResizeObserver((e) => {
@@ -76,7 +77,7 @@ export class WaveController extends CanvasController {
         })
     
         this.canvasObserver.observe(this.canvas);
-        console.log(this.canvasObserver)
+        this.fourierCoeffs.push({freq: 0, amp: (this.canvas.height/2) / Math.cos(Math.PI/4), phase: Math.PI/4});
     }
 
     setWave(kindString: String) {
@@ -86,6 +87,13 @@ export class WaveController extends CanvasController {
         this.fourierCoeffs = []
         this.fourierCoeffs.push({freq: 0, amp: (this.canvas.height/2) / Math.cos(Math.PI/4), phase: Math.PI/4});
         waveCoeffs.forEach(c => this.fourierCoeffs.push(c))
+    }
+
+    setCoeffs(coeffs: Array<FourierCoef>) {
+        this.fourierCoeffs = []
+        this.fourierCoeffs.push({freq: 0, amp: (this.canvas.height/2) / Math.cos(Math.PI/4), phase: Math.PI/4});
+        coeffs.forEach(c => this.fourierCoeffs.push(c))
+        console.log(this.fourierCoeffs)
     }
 
     updatePath() {

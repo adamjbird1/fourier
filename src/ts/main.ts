@@ -1,12 +1,15 @@
 import { Conductor } from "./conductor";
 import { DrawController } from "./draw-controller";
+import { DrawWaveController } from "./draw-wave-controller";
 import { EpiController } from "./epi-controller";
 import { WaveController } from "./waves-controller";
 
 function init() {
     let sketchController = new DrawController('drawingCanvas');
     let epiController = new EpiController('renderCanvas');
-    let wavesController = new WaveController('wavesCanvas', null);
+    let wavesController = new WaveController('wavesCanvas');
+    let waveDrawController = new DrawWaveController('drawWaveCanvas');
+    let waveRenderController = new WaveController('renderWaveCanvas');
 
     wavesController.setWave('Sine');
 
@@ -39,8 +42,18 @@ function init() {
         slider.value = String(1);
         sliderChange();
     })  
-    
-    let conductor = new Conductor([sketchController, epiController, wavesController]);
+
+    waveDrawController.onDrawingEnd.push(() => {
+        waveRenderController.setCoeffs(waveDrawController.fourierCoeffs)
+    })
+
+    let conductor = new Conductor([
+        sketchController,
+        epiController,
+        wavesController,
+        waveDrawController,
+        waveRenderController
+    ]);
     conductor.start();
 }
 
